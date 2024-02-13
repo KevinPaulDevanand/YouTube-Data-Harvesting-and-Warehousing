@@ -2,7 +2,7 @@ import pymongo
 import mysql.connector
 import pandas as pd
 import streamlit as st
-from sqlalchemy import create_engine,MetaData,Integer, String, Column, Table,DateTime,BIGINT,VARCHAR,TIMESTAMP,TEXT,Date
+from sqlalchemy import create_engine,MetaData,Integer, String, Column, Table,BIGINT,VARCHAR,TEXT,Date
 from googleapiclient.discovery import build
 
 
@@ -106,7 +106,6 @@ def get_video_info(Vedio_id_list):
                         Views=item['statistics']['viewCount'],
                         Likes=item['statistics'].get('likeCount'),
                         Comments=item['statistics'].get('commentCount'),
-                        Tags=item['snippet'].get('tags'),
                         Thumbnail=item['snippet']['thumbnails']['default']['url'],
                         Description=item['snippet']['description'],
                         Published_Date=item['snippet']['publishedAt'][0:10],
@@ -149,7 +148,7 @@ def get_comment_info(Vedio_id_list):
 
 # Loading into mangodb
 
-client = pymongo.MongoClient("mongodb+srv://mongo:mongo@cluster0.kz2lose.mongodb.net/?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://user:pswd@cluster0.kz2lose.mongodb.net/?retryWrites=true&w=majority")
 
 db = client["Youtube_data"]
 
@@ -182,7 +181,7 @@ def channels_table():
     df = pd.DataFrame(ch_list)
     print(df)
     engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="test", user="root", pw="kevin"))
+        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="test", user="root", pw=""))
 
     Meta = MetaData()
     table_channel = Table(
@@ -207,7 +206,7 @@ def playlists_table():
     print(df1)
 
     engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="test", user="root", pw="kevin"))
+        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="test", user="root", pw=""))
     Meta = MetaData()
     table_channel = Table(
         'playlist', Meta, Column('PlaylistId', VARCHAR(100), primary_key=True), Column('Title', VARCHAR(80)),
@@ -221,7 +220,7 @@ def playlists_table():
 
 
 def videos_table():
-    client = pymongo.MongoClient("mongodb+srv://mongo:mongo@cluster0.kz2lose.mongodb.net/?retryWrites=true&w=majority")
+    client = pymongo.MongoClient("mongodb+srv://user:pswd@cluster0.kz2lose.mongodb.net/?retryWrites=true&w=majority")
     vi_list = []
     db = client["Youtube_data"]
     coll1 = db["channel_details"]
@@ -229,12 +228,12 @@ def videos_table():
         for i in range(len(vi_data["video_information"])):
             vi_list.append(vi_data["video_information"][i])
     df2 = pd.DataFrame(vi_list)
-    df2 = df2.drop(['Tags'], axis=1)
-    pd.set_option('display.max_columns', 14)
+    
+    
     print(df2)
 
     engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="test", user="root", pw="kevin"))
+        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="test", user="root", pw=""))
     Meta = MetaData()
     table_channel = Table(
         'videos', Meta, Column('ChannelName', VARCHAR(100)), Column('ChannelId', VARCHAR(100)),
@@ -265,7 +264,7 @@ def comments_table():
     pd.set_option('display.max_columns', 5)
     print(df3)
     engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="test", user="root", pw="kevin"))
+        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="test", user="root", pw=""))
 
     Meta = MetaData()
 
@@ -371,7 +370,7 @@ elif show_table == ":red[comments]":
 # SQL connection
 mydb = mysql.connector.connect(host="127.0.0.1",
                                user="root",
-                               password="kevin",
+                               password="",
                                database="test",
                                port="3306"
                                )
