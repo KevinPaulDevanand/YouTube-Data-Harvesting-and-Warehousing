@@ -11,7 +11,7 @@ import numpy as np
 
 
 def api_connect():
-    Api_ID = "AIzaSyAeAmOmVRk7ciMUegOL6idK95pJIkqvWFI"
+    Api_ID = ""
     api_service_name = "youtube"
     api_version = "v3"
     youtube = build(api_service_name, api_version, developerKey=Api_ID)
@@ -153,7 +153,7 @@ def get_comment_info(Vedio_id_list):
 
 # Loading into mangodb
 
-client = pymongo.MongoClient("mongodb+srv://mongo:mongo@cluster0.kz2lose.mongodb.net/?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://user:psw@cluster0.kz2lose.mongodb.net/?retryWrites=true&w=majority")
 
 db = client["Youtube_data"]
 
@@ -225,7 +225,7 @@ def playlists_table():
 
 
 def videos_table():
-    client = pymongo.MongoClient("mongodb+srv://mongo:mongo@cluster0.kz2lose.mongodb.net/?retryWrites=true&w=majority")
+    client = pymongo.MongoClient("mongodb+srv://user:pws@cluster0.kz2lose.mongodb.net/?retryWrites=true&w=majority")
     vi_list = []
     db = client["Youtube_data"]
     coll1 = db["channel_details"]
@@ -377,7 +377,7 @@ with st.sidebar:
 # SQL connection
 mydb = mysql.connector.connect(host="127.0.0.1",
                                user="root",
-                               password="kevin",
+                               password="",
                                database="youtube",
                                port="3306"
                                )
@@ -473,7 +473,7 @@ with co1:
         st.write(pd.DataFrame(t10, columns=['Video Title', 'Channel Name', 'NO Of Comments']))
 with co2:
     engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="127.0.0.1", db="youtube", user="root", pw="kevin"))
+        "mysql+pymysql://{user}:{pw}@{host}/{db}".format(host="", db="", use="", pw=""))
 
     q2 = '''select ChannelName,videoCount from channels
           '''
